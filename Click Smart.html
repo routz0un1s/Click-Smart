@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Click Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0C0F2E;--blue:#2338FF;--bg:#F7F7FB;--ink:#0C0F2E;--mute:#454B75;--panel:#FFFFFF;--line:#C9CCE6;--pink:#FF4FA3;--yel:#FFD93D;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0C24;--ink:#EEF0FF;--mute:#A4AAD6;--panel:#14173A;--line:#2B3070}}
+:root[data-theme="dark"]{--bg:#0A0C24;--ink:#EEF0FF;--mute:#A4AAD6;--panel:#14173A;--line:#2B3070}
+*{box-sizing:border-box}
+html{scroll-padding-top:64px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"JetBrains Mono","IBM Plex Sans",sans-serif;margin:0 0 .5em;line-height:1.1;font-weight:700}
+h1{font-size:clamp(1.9rem,5.6vw,3.7rem);font-weight:800;letter-spacing:-.04em;overflow-wrap:break-word}h2{font-size:clamp(1.6rem,4.2vw,2.5rem);letter-spacing:-.03em;overflow-wrap:break-word}h3{font-size:1.15rem;font-weight:700;letter-spacing:-.02em}
+p{margin:0 0 1em;max-width:62ch}a{color:inherit}
+:focus-visible{outline:3px solid var(--yel);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--navy);color:#fff}
+nav .wrap{display:flex;gap:4px 18px;align-items:center;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+nav .brand{font:700 1.15rem "JetBrains Mono",sans-serif;margin-right:auto;color:var(--yel);text-decoration:none;border:0}
+nav a{text-decoration:none;font-weight:600;font-size:.92rem;padding:4px 0;border-bottom:3px solid transparent}
+nav a:hover,nav a[aria-current="page"]{border-color:var(--pink)}
+nav .brand:hover{border-color:transparent}
+nav .brand::before{content:"";display:inline-block;width:13px;height:18px;background:var(--yel);clip-path:polygon(0 0,0 100%,28% 76%,48% 100%,62% 92%,43% 68%,80% 68%);margin-right:9px;vertical-align:-3px}
+#lang{font:600 .9rem "IBM Plex Sans",sans-serif;background:var(--yel);color:var(--navy);border:0;padding:5px 10px;cursor:pointer}
+.btn{display:inline-block;font:600 1rem "IBM Plex Sans",sans-serif;text-decoration:none;color:var(--navy);background:var(--yel);padding:13px 22px;border:3px solid var(--navy);box-shadow:5px 5px 0 var(--navy);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--navy)}
+.btn.w{background:#fff}
+.hero{background-color:var(--blue);background-image:linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px);background-size:28px 28px;color:#fff;padding:56px 0 72px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center}
+.hero p{font-size:1.2rem;color:#E4E7FF}
+.ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px}
+.win{background:#fff;color:var(--navy);border:3px solid var(--navy);box-shadow:10px 10px 0 var(--navy);font-size:.97rem}
+.win header{background:var(--navy);color:#fff;padding:7px 12px;display:flex;align-items:center;gap:8px;font:500 1rem "JetBrains Mono",sans-serif}
+.win header i{width:11px;height:11px;background:var(--pink);display:inline-block}.win header i+i{background:var(--yel)}
+.win header span{margin-left:6px}
+.rows{margin:0;padding:6px 14px 0}
+.row{display:grid;grid-template-columns:105px 1fr;gap:2px 12px;padding:9px 0;border-bottom:1px solid #D9DBEE;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.row.in{opacity:1;transform:none}
+.row dt{color:#454B75;font-weight:600}.row dd{margin:0;font-weight:600;word-break:break-word}
+.row dd small{display:block;font-weight:400;color:#454B75}
+.win footer{padding:11px 14px;background:#FFF4B8;font-weight:600;font-size:.92rem}
+section{padding:72px 0}
+.lead{font-size:1.15rem;color:var(--mute)}
+.dark{background:var(--navy);color:#EEF0FF}.dark .lead{color:#B8BDEA}
+.doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:26px}
+.door{display:block;text-decoration:none;border:3px solid var(--ink);background:var(--panel);padding:20px;transition:transform .08s,box-shadow .08s}
+.door:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--blue)}
+.door h3{margin-bottom:.35em}.door p{color:var(--mute);margin:0;font-size:.97rem}
+.door span{display:inline-block;margin-top:12px;font-weight:600;border-bottom:3px solid var(--pink)}
+.school{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;border:3px solid var(--ink);background:var(--panel);padding:24px;box-shadow:8px 8px 0 var(--pink)}
+.logo{width:130px;height:130px;border:3px dashed var(--line);display:grid;place-items:center;text-align:center;font:500 1.05rem "JetBrains Mono",sans-serif;color:var(--mute);overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:contain}
+.school p{margin:0;color:var(--mute)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+#cyc{width:100%;max-width:430px;height:auto;display:block;margin:0 auto}
+#cyc .ring{fill:none;stroke:#3B4190;stroke-width:3;stroke-dasharray:4 8}
+#cyc .n{cursor:pointer}#cyc .n rect{fill:#14173A;stroke:#8E96FF;stroke-width:3}
+#cyc .n:hover rect{stroke:var(--yel)}
+#cyc .n.on rect{fill:var(--yel);stroke:var(--yel)}#cyc .n.on text{fill:var(--navy)}
+#cyc text{fill:#fff;font:500 14px "JetBrains Mono",sans-serif;text-anchor:middle;pointer-events:none}
+#cyc .pk{fill:var(--pink)}
+#detail{border:3px solid #8E96FF;padding:16px 18px;margin-top:14px;min-height:9em}
+#detail h3{color:var(--yel);margin-bottom:.3em}#detail p{margin:0;color:#D5D9FF}
+.facts{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+.facts li{border-left:4px solid var(--pink);padding-left:14px}
+.facts b{display:block;font:500 1.15rem "JetBrains Mono",sans-serif;color:var(--yel)}
+.page{padding:56px 0 90px;min-height:70vh}
+.status{border:3px solid var(--ink);background:var(--panel);box-shadow:8px 8px 0 var(--ink);padding:26px;max-width:740px;margin-top:26px}
+.status h3{margin-bottom:.3em}.status p{color:var(--mute);margin:0}
+.tag{display:inline-block;background:var(--pink);color:var(--navy);font:500 1rem "JetBrains Mono",sans-serif;padding:2px 10px;margin-bottom:14px}
+.bars{display:grid;gap:14px;margin-top:30px;max-width:740px}
+.bar{display:grid;grid-template-columns:minmax(150px,260px) 1fr 52px;gap:14px;align-items:center}
+.bar i{display:block;height:20px;background:var(--line)}.bar i span{display:block;height:100%;background:var(--blue)}
+.pad{height:180px;margin-top:26px;border:3px dashed #3B4190;display:grid;place-items:center;color:#B8BDEA;font:500 1.3rem "JetBrains Mono",sans-serif;max-width:740px}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+.tools input{flex:1 1 240px;font:inherit;padding:12px 14px;border:3px solid var(--ink);background:var(--panel);color:var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{font:600 .92rem "IBM Plex Sans",sans-serif;padding:9px 14px;border:3px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+#entries{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+details{border:3px solid var(--ink);background:var(--panel);padding:14px 16px;align-self:start}
+details[open]{box-shadow:6px 6px 0 var(--blue)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px;font:500 1.2rem "JetBrains Mono",sans-serif}
+summary::-webkit-details-marker{display:none}summary::after{content:"+"}details[open] summary::after{content:"-"}
+details p{margin:10px 0 0;color:var(--mute);font-size:.98rem}
+details h4{margin:16px 0 6px;font:500 1.05rem "JetBrains Mono",sans-serif;color:var(--blue)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) details h4{color:var(--yel)}}
+details ul{margin:0;padding-left:20px;font-size:.98rem}details li{margin-bottom:5px}
+.help{background:#FFF4B8;color:var(--navy);padding:10px 12px;margin-top:14px;font-size:.95rem;font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:26px 0 40px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border:3px solid var(--ink);background:var(--panel);padding:16px}
+.steps li::before{content:counter(s);display:inline-block;background:var(--yel);color:var(--navy);font:700 1.2rem "JetBrains Mono",sans-serif;padding:0 10px;margin-bottom:8px}
+.steps b{display:block}.steps span{color:var(--mute);font-size:.96rem}
+.contacts{display:grid;gap:16px}
+.contact{display:grid;grid-template-columns:190px 1fr;gap:20px;border:3px solid var(--ink);background:var(--panel);padding:18px}
+.contact .num{font:700 1.35rem "JetBrains Mono",sans-serif;color:var(--blue);line-height:1.1;text-decoration:none}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .contact .num{color:var(--yel)}}
+.contact h3{margin-bottom:.2em}.contact p{margin:0 0 .4em;color:var(--mute)}
+.contact a.l{font-weight:600;margin-right:14px}
+.contact.urgent{background:#FFF4B8;color:var(--navy)}.contact.urgent p{color:#33385E}.contact.urgent .num{color:var(--navy)}
+.posters{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;margin-top:28px}
+.poster{border:3px solid var(--ink);background:var(--panel);box-shadow:6px 6px 0 var(--ink);margin:0}
+.poster img{display:block;width:100%;height:auto}
+.poster.ph{aspect-ratio:3/4;display:grid;place-items:center;border-style:dashed;box-shadow:none;color:var(--mute);font:500 1.1rem "JetBrains Mono",sans-serif;text-align:center;padding:12px}
+.poster figcaption{padding:10px 12px;font-weight:600;font-size:.95rem}
+footer.site{padding:28px 0;color:var(--mute);font-size:.92rem;border-top:1px solid var(--line)}
+@media(max-width:820px){.hero .wrap,.split{grid-template-columns:1fr}section{padding:56px 0}.row{grid-template-columns:1fr}.bar{grid-template-columns:1fr 48px}.bar i{grid-column:1/2;grid-row:2}.win{box-shadow:6px 6px 0 var(--navy)}.school,.contact{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.row{transition:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+<a class="brand" href="#/home" data-i="brand"></a>
+<a href="#/home" data-nav="home" data-i="nHome"></a><a href="#/survey" data-nav="survey" data-i="nSurvey"></a><a href="#/game" data-nav="game" data-i="nGame"></a><a href="#/encyclopedia" data-nav="encyclopedia" data-i="nWiki"></a><a href="#/help" data-nav="help" data-i="nHelp"></a><a href="#/campaign" data-nav="campaign" data-i="nCamp"></a>
+<button id="lang" type="button" aria-label="Language / Γλώσσα"></button>
+</div></nav>
+
+<!-- HOME -->
+<div data-view="home">
+<header class="hero"><div class="wrap">
+<div><h1 data-i="h1"></h1><p data-i="heroP"></p>
+<div class="ctas"><a class="btn" href="#/encyclopedia" data-i="cta1"></a><a class="btn w" href="#/game" data-i="cta2"></a></div></div>
+<div class="win"><header><i></i><i></i><span>what_this_page_sees.exe</span></header><dl class="rows" id="rows"></dl><footer data-i="winNote"></footer></div>
+</div></header>
+
+<section><div class="wrap"><h2 data-i="exploreH"></h2><div class="doors" id="doors"></div></div></section>
+
+<section style="padding-top:0"><div class="wrap"><div class="school">
+<div class="logo" id="logo"></div>
+<div><h3 data-i="schoolH"></h3><p data-i="schoolP"></p></div>
+</div></div></section>
+
+<section id="problem" class="dark"><div class="wrap">
+<h2 data-i="probH"></h2><p class="lead" data-i="probLead"></p>
+<div class="split">
+<div><ul class="facts">
+<li><b data-i="f1t"></b><span data-i="f1p"></span></li>
+<li><b data-i="f2t"></b><span data-i="f2p"></span></li>
+<li><b data-i="f3t"></b><span data-i="f3p"></span></li></ul>
+<p style="margin-top:22px" data-i="probEnd"></p></div>
+<div><svg id="cyc" viewBox="0 0 400 400" role="group"></svg><div id="detail" aria-live="polite"></div></div>
+</div></div></section>
+</div>
+
+<!-- SURVEY -->
+<div data-view="survey" hidden><main class="page"><div class="wrap">
+<h1 tabindex="-1" data-i="sH"></h1><p class="lead" data-i="sLead"></p>
+<div class="status" id="resStatus"><span class="tag" data-i="sTag"></span><h3 data-i="sT"></h3><p data-i="sP"></p></div>
+<div class="bars" id="bars"></div>
+</div></main></div>
+
+<!-- GAME -->
+<div data-view="game" hidden><main class="page dark"><div class="wrap">
+<h1 tabindex="-1" data-i="gH"></h1><p class="lead" data-i="gLead"></p><div class="pad" data-i="gPad"></div>
+</div></main></div>
+
+<!-- ENCYCLOPEDIA -->
+<div data-view="encyclopedia" hidden><main class="page"><div class="wrap">
+<h1 tabindex="-1" data-i="wH"></h1><p class="lead" data-i="wLead"></p>
+<div class="tools"><input id="q" type="search" data-ph="wSearch"><div class="chips" id="chips" role="group"></div></div>
+<div id="entries"></div><p id="none" hidden data-i="wNone"></p>
+</div></main></div>
+
+<!-- HELP -->
+<div data-view="help" hidden><main class="page"><div class="wrap">
+<h1 tabindex="-1" data-i="hH"></h1><p class="lead" data-i="hLead"></p>
+<ol class="steps" id="steps"></ol>
+<div class="contacts" id="contacts"></div>
+<p style="margin-top:26px;color:var(--mute)" data-i="hNote"></p>
+</div></main></div>
+
+<!-- CAMPAIGN -->
+<div data-view="campaign" hidden><main class="page"><div class="wrap">
+<h1 tabindex="-1" data-i="cH"></h1><p class="lead" data-i="cLead"></p>
+<div class="posters" id="posters"></div>
+</div></main></div>
+
+<footer class="site"><div class="wrap" data-i="foot"></div></footer>
+
+<script>
+/* ===== EDIT THESE ===== */
+const LOGO_SRC="";   /* paste the school logo here as a data:image/... URI */
+const POSTERS=[];    /* e.g. {src:"data:image/jpeg;base64,...", en:"Title", el:"Τίτλος"} */
+const SURVEY=[];     /* e.g. {en:"Check a source before sharing", el:"Ελέγχω την πηγή", pct:42} */
+
+/* ===== Interface text ===== */
+const T={
+en:{brand:"Click Smart",nHome:"Home",nSurvey:"Survey",nGame:"Game",nWiki:"Encyclopedia",nHelp:"Get help",nCamp:"Campaign",
+h1:"This page already knows things about you.",heroP:"We haven't asked for anything. Every line in the window was read from your device the moment the page opened. Now imagine every site and app you use doing the same, all day.",
+cta1:"Open the encyclopedia",cta2:"Play the game",winNote:"Read on your device only. Nothing was saved or sent anywhere.",
+exploreH:"Explore the project",
+d_survey:["Survey results","What teenagers told us about how they share, check and protect information.","View results"],
+d_game:["The game","Make choices online and see where your information ends up.","Start playing"],
+d_encyclopedia:["Encyclopedia","What each threat is, how to prevent it and what to do if it happens.","Open it"],
+d_help:["Who to inform","Helplines, police and authorities in Greece.","Find help"],
+d_campaign:["Awareness campaign","The posters our team designed.","See the posters"],
+schoolH:"A school project",schoolP:"This initiative was created as a school project at Doukas Schools, Greece, by a team of students for the Safer Internet 4 Kids competition.",logoTxt:"School logo",
+probH:"About the problem",probLead:"Two things are happening online at the same time, and they feed each other.",
+f1t:"Information travels faster than it can be checked",f1p:"A rumour, an edited photo or a made-up claim can reach thousands of people before anyone asks where it came from. Feeds tend to promote what gets reactions, not what is accurate.",
+f2t:"Personal details are collected quietly",f2p:"Clicks, searches, locations and viewing time are logged and combined into a profile. Even small details like those in the window above can recognise your device.",
+f3t:"The two reinforce each other",f3p:"The profile decides what you see next. What you see shapes what you share. What you share creates more data.",
+probEnd:"Teenagers are online the most and often get the least explanation of how this works. This project aims to change that.",
+cycLabel:"The cycle of information. Press a stage to stop the packet there.",hint:"Press a stage to stop the packet there. Press it again to let it go.",
+stages:[["Post","1. Someone posts","A photo, opinion or link goes online. It can carry hidden details like location, faces, school names or a username you reuse elsewhere."],
+["Share","2. Others pass it on","Friends reshare, screenshot or remix it. Once copied, you can't take it back, and it can lose its original context."],
+["Boost","3. Algorithms rank it","Platforms push whatever gets strong reactions. Surprising or emotional posts spread fastest, true or not."],
+["Profile","4. Data is collected","Every click, pause and search is logged. Together they build a profile of your interests, habits and even mood."],
+["Target","5. You see what fits","Ads and recommendations are chosen for you. That changes what you read and share next, and the cycle starts again."]],
+sH:"Survey results",sLead:"Our questionnaire asks teenagers how they share, check and protect what they find online.",sTag:"Survey open",sT:"Results will appear here",sP:"We are still collecting answers. When the survey closes, the findings will be shown on this page.",
+gH:"The game",gLead:"Decide what to post, who to trust and which permissions to allow, then see where your information ends up.",gPad:"LOADING... launching soon",
+wH:"Digital safety encyclopedia",wLead:"What each threat is, how to prevent it, and what to do if it happens.",wSearch:"Search, e.g. phishing",wNone:"Nothing matches. Try a shorter word or choose All.",all:"All",prev:"How to prevent it",ifh:"If it happens: ",
+cat:{scams:"Scams",info:"Information",privacy:"Privacy",accounts:"Accounts",wellbeing:"Wellbeing"},
+hH:"Who to inform",hLead:"If something went wrong online, you are not alone. Here is what to do first and who to contact.",
+steps:[["Don't panic, don't delete","Take screenshots of messages, usernames and dates. They are evidence."],["Stop contact","Block the account and report it to the platform."],["Tell someone you trust","A parent, teacher or your school. It is not your fault."],["Get expert help","Use one of the services below."]],
+contacts:[
+{n:"112",tel:"112",u:1,t:"Immediate danger",p:"If you or someone else is in danger right now, call the European emergency number."},
+{n:"11188",tel:"11188",t:"Cyber Alert, Hellenic Police Cyber Crime Division",p:"The police line for online crime such as fraud, threats and blackmail."},
+{n:"210 6007686",tel:"+302106007686",t:"Helpline (help-line.gr)",p:"Free advice about bullying, blackmail or anything that worries you online. Working days, 9:00 to 17:00.",l:[["help-line.gr","https://www.help-line.gr"],["contact@helpline.gr","mailto:contact@helpline.gr"]]},
+{n:"SafeLine",t:"Report illegal content",p:"Report illegal content such as child sexual abuse material, anonymously. The online form is open 24/7.",l:[["safeline.gr","https://www.safeline.gr"]]},
+{n:"Data Protection",t:"Hellenic Data Protection Authority",p:"If your personal data has been used unlawfully.",l:[["dpa.gr","https://www.dpa.gr"]]}],
+hNote:"Contact details can change, so check the official websites before you call.",
+cH:"Awareness campaign",cLead:"Posters designed by our team to start a conversation with classmates about information and personal data online.",soon:"Poster coming soon",
+foot:"A Doukas Schools student project for Safer Internet 4 Kids. Educational content, not legal advice.",
+rows:[["Language","Hints at your country."],["Time zone","A free clue to your region."],["Device","Tells sites what you use."],["Screen","Rarely the same as another device."],["Local time","Shows when you are awake."],["Theme","Another tiny detail."]],dark:"Dark mode",light:"Light mode"},
+el:{brand:"Click Smart",nHome:"Αρχική",nSurvey:"Έρευνα",nGame:"Παιχνίδι",nWiki:"Εγκυκλοπαίδεια",nHelp:"Βοήθεια",nCamp:"Εκστρατεία",
+h1:"Αυτή η σελίδα ξέρει ήδη πράγματα για σένα.",heroP:"Δεν ζητήσαμε τίποτα. Κάθε γραμμή στο παράθυρο διαβάστηκε από τη συσκευή σου τη στιγμή που άνοιξε η σελίδα. Φαντάσου τώρα κάθε ιστοσελίδα και εφαρμογή που χρησιμοποιείς να κάνει το ίδιο, όλη μέρα.",
+cta1:"Άνοιξε την εγκυκλοπαίδεια",cta2:"Παίξε το παιχνίδι",winNote:"Διαβάστηκαν μόνο στη συσκευή σου. Τίποτα δεν αποθηκεύτηκε ούτε στάλθηκε.",
+exploreH:"Εξερεύνησε το πρόγραμμα",
+d_survey:["Αποτελέσματα έρευνας","Τι μας είπαν οι έφηβοι για το πώς μοιράζονται, ελέγχουν και προστατεύουν πληροφορίες.","Δες τα αποτελέσματα"],
+d_game:["Το παιχνίδι","Κάνε επιλογές στο διαδίκτυο και δες πού καταλήγουν τα στοιχεία σου.","Ξεκίνα"],
+d_encyclopedia:["Εγκυκλοπαίδεια","Τι είναι κάθε απειλή, πώς την αποφεύγεις και τι κάνεις αν συμβεί.","Άνοιξέ την"],
+d_help:["Σε ποιον να απευθυνθείς","Γραμμές βοήθειας, αστυνομία και αρχές στην Ελλάδα.","Βρες βοήθεια"],
+d_campaign:["Εκστρατεία ενημέρωσης","Οι αφίσες που σχεδίασε η ομάδα μας.","Δες τις αφίσες"],
+schoolH:"Μια σχολική δράση",schoolP:"Η πρωτοβουλία αυτή υλοποιήθηκε ως σχολικό πρόγραμμα των Εκπαιδευτηρίων Δούκα από ομάδα μαθητών, στο πλαίσιο του διαγωνισμού Safer Internet 4 Kids.",logoTxt:"Λογότυπο σχολείου",
+probH:"Σχετικά με το πρόβλημα",probLead:"Δύο πράγματα συμβαίνουν ταυτόχρονα στο διαδίκτυο και τροφοδοτούν το ένα το άλλο.",
+f1t:"Οι πληροφορίες ταξιδεύουν πιο γρήγορα απ' όσο ελέγχονται",f1p:"Μια φήμη, μια επεξεργασμένη φωτογραφία ή μια ψευδής δήλωση μπορεί να φτάσει σε χιλιάδες ανθρώπους πριν ρωτήσει κάποιος από πού προήλθε. Τα feeds προωθούν ό,τι προκαλεί αντιδράσεις, όχι ό,τι είναι ακριβές.",
+f2t:"Τα προσωπικά στοιχεία συλλέγονται αθόρυβα",f2p:"Κλικ, αναζητήσεις, τοποθεσίες και χρόνος θέασης καταγράφονται και γίνονται προφίλ. Ακόμη και μικρές λεπτομέρειες, όπως αυτές του παραθύρου παραπάνω, μπορούν να αναγνωρίσουν τη συσκευή σου.",
+f3t:"Τα δύο ενισχύουν το ένα το άλλο",f3p:"Το προφίλ καθορίζει τι βλέπεις μετά. Αυτό που βλέπεις επηρεάζει τι μοιράζεσαι. Αυτό που μοιράζεσαι δημιουργεί νέα δεδομένα.",
+probEnd:"Οι έφηβοι είναι οι πιο συνδεδεμένοι και συχνά παίρνουν τις λιγότερες εξηγήσεις για το πώς λειτουργούν όλα αυτά. Το πρόγραμμά μας θέλει να το αλλάξει.",
+cycLabel:"Ο κύκλος της πληροφορίας. Πάτα ένα στάδιο για να σταματήσει εκεί το πακέτο.",hint:"Πάτα ένα στάδιο για να σταματήσει εκεί το πακέτο. Πάτα το ξανά για να συνεχίσει.",
+stages:[["Ανάρτηση","1. Κάποιος αναρτά","Μια φωτογραφία, άποψη ή σύνδεσμος ανεβαίνει. Μπορεί να κρύβει τοποθεσία, πρόσωπα, το όνομα του σχολείου ή ένα όνομα χρήστη που χρησιμοποιείς αλλού."],
+["Μοίρασμα","2. Άλλοι το προωθούν","Φίλοι το κοινοποιούν, το φωτογραφίζουν ή το αλλάζουν. Μόλις αντιγραφεί, δεν παίρνεται πίσω και μπορεί να χάσει το αρχικό του πλαίσιο."],
+["Προώθηση","3. Οι αλγόριθμοι το ταξινομούν","Οι πλατφόρμες προωθούν ό,τι προκαλεί έντονες αντιδράσεις. Τα εκπληκτικά ή συναισθηματικά posts εξαπλώνονται ταχύτερα, είτε είναι αληθή είτε όχι."],
+["Προφίλ","4. Συλλέγονται δεδομένα","Κάθε κλικ, παύση και αναζήτηση καταγράφεται. Μαζί φτιάχνουν προφίλ με τα ενδιαφέροντα, τις συνήθειες, ακόμη και τη διάθεσή σου."],
+["Στόχευση","5. Βλέπεις ό,τι σου ταιριάζει","Διαφημίσεις και προτάσεις επιλέγονται για σένα. Αυτό αλλάζει τι διαβάζεις και τι μοιράζεσαι μετά, και ο κύκλος ξεκινά ξανά."]],
+sH:"Αποτελέσματα έρευνας",sLead:"Το ερωτηματολόγιό μας ρωτά τους εφήβους πώς μοιράζονται, ελέγχουν και προστατεύουν ό,τι βρίσκουν στο διαδίκτυο.",sTag:"Η έρευνα είναι ανοιχτή",sT:"Τα αποτελέσματα θα εμφανιστούν εδώ",sP:"Συλλέγουμε ακόμη απαντήσεις. Όταν κλείσει η έρευνα, τα ευρήματα θα εμφανιστούν σε αυτή τη σελίδα.",
+gH:"Το παιχνίδι",gLead:"Αποφάσισε τι θα αναρτήσεις, ποιον θα εμπιστευτείς και ποιες άδειες θα δώσεις, και δες πού καταλήγουν τα στοιχεία σου.",gPad:"ΦΟΡΤΩΣΗ... έρχεται σύντομα",
+wH:"Εγκυκλοπαίδεια ψηφιακής ασφάλειας",wLead:"Τι είναι κάθε απειλή, πώς την αποφεύγεις και τι κάνεις αν συμβεί.",wSearch:"Αναζήτηση, π.χ. phishing",wNone:"Δεν βρέθηκε τίποτα. Δοκίμασε πιο σύντομη λέξη ή διάλεξε Όλα.",all:"Όλα",prev:"Πώς το αποφεύγω",ifh:"Αν συμβεί: ",
+cat:{scams:"Απάτες",info:"Πληροφόρηση",privacy:"Απόρρητο",accounts:"Λογαριασμοί",wellbeing:"Ευεξία"},
+hH:"Σε ποιον να απευθυνθείς",hLead:"Αν κάτι πήγε στραβά στο διαδίκτυο, δεν είσαι μόνος/η. Δες τι να κάνεις πρώτα και ποιον να καλέσεις.",
+steps:[["Μην πανικοβάλλεσαι, μη διαγράψεις","Κράτα στιγμιότυπα οθόνης με μηνύματα, ονόματα χρηστών και ημερομηνίες. Είναι απόδειξη."],["Σταμάτα την επαφή","Μπλόκαρε τον λογαριασμό και ανάφερέ τον στην πλατφόρμα."],["Πες το σε κάποιον που εμπιστεύεσαι","Γονέα, καθηγητή ή το σχολείο σου. Δεν φταις εσύ."],["Ζήτα βοήθεια από ειδικούς","Χρησιμοποίησε μία από τις υπηρεσίες παρακάτω."]],
+contacts:[
+{n:"112",tel:"112",u:1,t:"Άμεσος κίνδυνος",p:"Αν εσύ ή κάποιος άλλος κινδυνεύει αυτή τη στιγμή, κάλεσε τον ευρωπαϊκό αριθμό έκτακτης ανάγκης."},
+{n:"11188",tel:"11188",t:"Cyber Alert, Δίωξη Ηλεκτρονικού Εγκλήματος",p:"Η γραμμή της Ελληνικής Αστυνομίας για εγκλήματα στο διαδίκτυο, όπως απάτες, απειλές και εκβιασμούς."},
+{n:"210 6007686",tel:"+302106007686",t:"Γραμμή Βοήθειας (help-line.gr)",p:"Δωρεάν συμβουλές για εκφοβισμό, εκβιασμό ή ό,τι σε ανησυχεί στο διαδίκτυο. Εργάσιμες ημέρες, 9:00 έως 17:00.",l:[["help-line.gr","https://www.help-line.gr"],["contact@helpline.gr","mailto:contact@helpline.gr"]]},
+{n:"SafeLine",t:"Αναφορά παράνομου περιεχομένου",p:"Ανώνυμη αναφορά παράνομου περιεχομένου, όπως υλικό σεξουαλικής κακοποίησης παιδιών. Η φόρμα λειτουργεί όλο το 24ωρο.",l:[["safeline.gr","https://www.safeline.gr"]]},
+{n:"Δεδομένα",t:"Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα",p:"Αν τα προσωπικά σου δεδομένα χρησιμοποιήθηκαν παράνομα.",l:[["dpa.gr","https://www.dpa.gr"]]}],
+hNote:"Τα στοιχεία επικοινωνίας μπορεί να αλλάξουν, γι' αυτό έλεγξε τις επίσημες ιστοσελίδες πριν καλέσεις.",
+cH:"Εκστρατεία ενημέρωσης",cLead:"Αφίσες που σχεδίασε η ομάδα μας για να ανοίξουμε συζήτηση με τους συμμαθητές μας για τις πληροφορίες και τα προσωπικά δεδομένα στο διαδίκτυο.",soon:"Η αφίσα έρχεται σύντομα",
+foot:"Μαθητικό πρόγραμμα των Εκπαιδευτηρίων Δούκα για το Safer Internet 4 Kids. Εκπαιδευτικό περιεχόμενο, όχι νομική συμβουλή.",
+rows:[["Γλώσσα","Δείχνει τη χώρα σου."],["Ζώνη ώρας","Ένας εύκολος δείκτης για την περιοχή σου."],["Συσκευή","Λέει στις σελίδες τι χρησιμοποιείς."],["Οθόνη","Σπάνια ίδια με άλλη συσκευή."],["Τοπική ώρα","Δείχνει πότε είσαι ξύπνιος/η."],["Θέμα","Μια ακόμη μικρή λεπτομέρεια."]],dark:"Σκούρο θέμα",light:"Φωτεινό θέμα"}};
+
+/* ===== Encyclopedia content ===== */
+const WIKI=[
+{c:"scams",en:{t:"Phishing",d:"A message pretending to be a bank, school or friend to trick you into giving up a password or clicking a bad link.",p:["Check the sender's real address, not just the display name.","Don't use links in messages. Open the official site yourself.","Be suspicious of urgency like 'act now or lose your account'."],h:"Change the password at once, log out of other devices and tell the service."},
+ el:{t:"Phishing",d:"Μήνυμα που παριστάνει τράπεζα, σχολείο ή φίλο για να σε ξεγελάσει να δώσεις κωδικό ή να πατήσεις επικίνδυνο σύνδεσμο.",p:["Έλεγξε την πραγματική διεύθυνση του αποστολέα, όχι μόνο το όνομα.","Μην πατάς συνδέσμους σε μηνύματα. Άνοιξε μόνος/η την επίσημη σελίδα.","Υποψιάσου το επείγον ύφος, π.χ. «πρόσεξε, χάνεις τον λογαριασμό σου»."],h:"Άλλαξε αμέσως τον κωδικό, αποσύνδεσε τις άλλες συσκευές και ενημέρωσε την υπηρεσία."}},
+{c:"scams",en:{t:"Online scams",d:"Fake prizes, shops or 'friends' asking for money or card details.",p:["If it sounds too good to be true, assume it is.","Check reviews and the web address before buying.","Never send money to someone you only know online."],h:"Stop contact, keep screenshots, report it and tell an adult. If you sent money, contact the bank quickly."},
+ el:{t:"Διαδικτυακές απάτες",d:"Ψεύτικα δώρα, καταστήματα ή «φίλοι» που ζητούν χρήματα ή στοιχεία κάρτας.",p:["Αν ακούγεται πολύ καλό για να είναι αληθινό, μάλλον δεν είναι.","Έλεγξε κριτικές και διεύθυνση ιστοσελίδας πριν αγοράσεις.","Μη στέλνεις χρήματα σε άτομο που γνωρίζεις μόνο online."],h:"Σταμάτα την επαφή, κράτα στιγμιότυπα, ανάφερέ το και πες το σε έναν ενήλικα. Αν έστειλες χρήματα, επικοινώνησε άμεσα με την τράπεζα."}},
+{c:"info",en:{t:"Disinformation",d:"False information spread on purpose. Misinformation is similar, but shared by people who believe it is true.",p:["Find who published it and whether they are reliable.","Check whether two independent sources confirm it.","Wait before sharing anything that makes you angry or shocked."],h:"Don't amplify it. Report it, and if you shared it, post a correction."},
+ el:{t:"Παραπληροφόρηση",d:"Ψευδείς πληροφορίες που διαδίδονται σκόπιμα. Η κακή πληροφόρηση είναι παρόμοια, αλλά τη μοιράζονται άνθρωποι που τη θεωρούν αληθινή.",p:["Βρες ποιος το δημοσίευσε και αν είναι αξιόπιστος.","Έλεγξε αν δύο ανεξάρτητες πηγές το επιβεβαιώνουν.","Περίμενε πριν μοιραστείς κάτι που σε θυμώνει ή σε σοκάρει."],h:"Μην το ενισχύσεις. Ανάφερέ το και, αν το μοιράστηκες, δημοσίευσε διόρθωση."}},
+{c:"info",en:{t:"Algorithm",d:"The rules a platform uses to choose your feed, usually favouring what keeps you watching.",p:["Search for topics on purpose instead of relying on recommendations.","Follow a mix of sources and viewpoints.","Take a break when a feed makes you feel worse."],h:"Use 'not interested' and adjust feed settings to retrain it."},
+ el:{t:"Αλγόριθμος",d:"Οι κανόνες που επιλέγουν τι βλέπεις στο feed, συνήθως ό,τι σε κρατά περισσότερο.",p:["Ψάξε θέματα μόνος/η σου αντί να βασίζεσαι στις προτάσεις.","Ακολούθα διαφορετικές πηγές και απόψεις.","Κάνε διάλειμμα όταν το feed σε κάνει να νιώθεις χειρότερα."],h:"Πάτα «δεν με ενδιαφέρει» και άλλαξε τις ρυθμίσεις για να το επανεκπαιδεύσεις."}},
+{c:"info",en:{t:"Deepfake",d:"A video, image or voice made or altered by AI to look real.",p:["Look for odd lighting, blurred edges and audio that doesn't match.","Check whether trusted outlets report the same thing.","Agree a code word with family in case someone fakes a call."],h:"Save evidence, report it to the platform and tell an adult."},
+ el:{t:"Deepfake",d:"Βίντεο, εικόνα ή φωνή που φτιάχτηκε ή άλλαξε με τεχνητή νοημοσύνη ώστε να μοιάζει αληθινή.",p:["Πρόσεξε περίεργο φωτισμό, θολές άκρες και ήχο που δεν ταιριάζει.","Έλεγξε αν το αναφέρουν αξιόπιστα μέσα.","Συμφώνησε μια κωδική λέξη με την οικογένειά σου για ψεύτικες κλήσεις."],h:"Κράτησε αποδείξεις, ανάφερέ το στην πλατφόρμα και πες το σε έναν ενήλικα."}},
+{c:"privacy",en:{t:"Digital footprint",d:"Everything findable about you: posts, tags, comments, accounts and data others collect.",p:["Search your own name and see what appears.","Make accounts private and review tags.","Treat every post as permanent, because copies can outlive it."],h:"Ask the site or person to remove it and use the platform's removal tools."},
+ el:{t:"Ψηφιακό αποτύπωμα",d:"Ό,τι μπορεί να βρει κάποιος για σένα: αναρτήσεις, tags, σχόλια, λογαριασμοί και δεδομένα που συλλέγουν άλλοι.",p:["Γκουγκλάρισε το όνομά σου και δες τι εμφανίζεται.","Βάλε τους λογαριασμούς ιδιωτικούς και έλεγξε τα tags.","Σκέψου κάθε ανάρτηση ως μόνιμη, γιατί υπάρχουν αντίγραφα."],h:"Ζήτησε από τον ιστότοπο ή το άτομο να το αφαιρέσει και χρησιμοποίησε τα εργαλεία αφαίρεσης της πλατφόρμας."}},
+{c:"privacy",en:{t:"App permissions",d:"What an app may access: camera, microphone, contacts or location.",p:["Ask if the app really needs it. If not, choose Don't allow.","Give location only while using the app.","Review permissions in settings every few months."],h:"Revoke the permission in settings and check what the app already has."},
+ el:{t:"Άδειες εφαρμογών",d:"Σε τι έχει πρόσβαση μια εφαρμογή: κάμερα, μικρόφωνο, επαφές ή τοποθεσία.",p:["Ρώτα αν χρειάζεται πραγματικά. Αν όχι, επίλεξε «Να μην επιτρέπεται».","Δώσε τοποθεσία μόνο όσο χρησιμοποιείς την εφαρμογή.","Έλεγξε τις άδειες στις ρυθμίσεις κάθε λίγους μήνες."],h:"Ανάκαλεσε την άδεια στις ρυθμίσεις και έλεγξε τι έχει ήδη η εφαρμογή."}},
+{c:"accounts",en:{t:"Passwords and 2FA",d:"A long, unique password for each account, plus a second check such as an app code. Together they block most account takeovers.",p:["Use a password manager or a long phrase of random words.","Turn on two-factor authentication, starting with your email.","Never share a code, even with someone claiming to be support."],h:"If an account is breached, change that password first, then any other where you reused it."},
+ el:{t:"Κωδικοί και επαλήθευση 2 βημάτων",d:"Ένας μακρύς, μοναδικός κωδικός για κάθε λογαριασμό και ένας δεύτερος έλεγχος, όπως κωδικός από εφαρμογή. Μαζί μπλοκάρουν τις περισσότερες παραβιάσεις.",p:["Χρησιμοποίησε διαχειριστή κωδικών ή μια μεγάλη φράση από τυχαίες λέξεις.","Ενεργοποίησε την επαλήθευση 2 βημάτων, πρώτα στο email σου.","Μη μοιράζεσαι ποτέ κωδικό, ακόμη κι αν σου το ζητά κάποιος που λέει ότι είναι υποστήριξη."],h:"Αν παραβιαστεί λογαριασμός, άλλαξε πρώτα αυτόν τον κωδικό και μετά όπου τον είχες επαναχρησιμοποιήσει."}},
+{c:"accounts",en:{t:"Public Wi-Fi",d:"Open networks in cafes or stations that others may be able to monitor.",p:["Avoid logging into important accounts on them.","Use mobile data for banking and email.","Check the network name with staff, because fake hotspots copy real names."],h:"Log out, change the passwords you used and check your device."},
+ el:{t:"Δημόσιο Wi-Fi",d:"Ανοιχτά δίκτυα σε καφέ ή σταθμούς που άλλοι μπορεί να παρακολουθούν.",p:["Απόφυγε σημαντικές συνδέσεις σε αυτά.","Χρησιμοποίησε δεδομένα κινητού για τράπεζα και email.","Ρώτα το προσωπικό για το όνομα του δικτύου, γιατί τα ψεύτικα αντιγράφουν τα πραγματικά."],h:"Αποσυνδέσου, άλλαξε τους κωδικούς που χρησιμοποίησες και έλεγξε τη συσκευή σου."}},
+{c:"wellbeing",en:{t:"Cyberbullying",d:"Repeated harassment or humiliation online. It is never the target's fault.",p:["Keep accounts private and limit who can message you.","Don't reply to bullies, as it often makes things worse.","Learn how to block and report on every app you use."],h:"Save evidence, block, report, and tell a trusted adult or the Helpline. You don't have to handle it alone."},
+ el:{t:"Διαδικτυακός εκφοβισμός",d:"Επαναλαμβανόμενη παρενόχληση ή ταπείνωση στο διαδίκτυο. Δεν φταίει ποτέ το θύμα.",p:["Κράτα τους λογαριασμούς ιδιωτικούς και περιόρισε ποιος σου στέλνει μηνύματα.","Μην απαντάς στους θύτες, συχνά χειροτερεύει τα πράγματα.","Μάθε πώς να κάνεις μπλοκ και αναφορά σε κάθε εφαρμογή."],h:"Κράτα αποδείξεις, μπλόκαρε, ανάφερε και πες το σε έναν ενήλικα ή στη Γραμμή Βοήθειας. Δεν χρειάζεται να το αντιμετωπίσεις μόνος/η."}}];
+
+/* ===== Language ===== */
+let lang="en";
+try{lang=localStorage.getItem("lang")||((navigator.language||"").toLowerCase().startsWith("el")?"el":"en")}catch(e){}
+const t=k=>T[lang][k];
+const $=id=>document.getElementById(id);
+const VIEWS=["home","survey","game","encyclopedia","help","campaign"];
+function applyLang(){
+ document.documentElement.lang=lang;document.title=t("brand");
+ document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));
+ document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=t(e.dataset.ph));
+ $("lang").textContent=lang==="en"?"ΕΛ":"EN";
+ $("doors").innerHTML="";
+ ["encyclopedia","help","campaign","game","survey"].forEach(v=>{const d=t("d_"+v),a=document.createElement("a");a.className="door";a.href="#/"+v;
+  a.innerHTML="<h3></h3><p></p><span></span>";a.children[0].textContent=d[0];a.children[1].textContent=d[1];a.children[2].textContent=d[2];$("doors").appendChild(a)});
+ const lg=$("logo");lg.innerHTML="";
+ if(LOGO_SRC){const im=new Image();im.src=LOGO_SRC;im.alt="Doukas Schools";lg.appendChild(im);lg.style.border="0"}else lg.textContent=t("logoTxt");
+ buildRows();buildStages();buildChips();render();buildHelp();buildPosters();buildSurvey();
+}
+$("lang").onclick=()=>{lang=lang==="en"?"el":"en";try{localStorage.setItem("lang",lang)}catch(e){}applyLang();route(true)};
+
+/* ===== Router ===== */
+function route(keep){
+ const h=location.hash.replace("#/","")||"home",name=VIEWS.includes(h)?h:"home";
+ document.querySelectorAll("[data-view]").forEach(v=>v.hidden=v.dataset.view!==name);
+ document.querySelectorAll("[data-nav]").forEach(a=>a.dataset.nav===name?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+ if(!keep===true||keep!==true){window.scrollTo(0,0)}
+}
+addEventListener("hashchange",()=>route());
+
+/* ===== Home: what this page can read ===== */
+const sr=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function buildRows(){
+ const n=navigator,ua=n.userAgent;
+ const br=/Edg\//.test(ua)?"Edge":/OPR\//.test(ua)?"Opera":/Firefox\//.test(ua)?"Firefox":/Chrome\//.test(ua)?"Chrome":/Safari\//.test(ua)?"Safari":"?";
+ const os=/Windows/.test(ua)?"Windows":/Android/.test(ua)?"Android":/iPhone|iPad/.test(ua)?"iOS":/Mac OS/.test(ua)?"macOS":/Linux/.test(ua)?"Linux":"?";
+ let tz="?";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone}catch(e){}
+ const vals=[(n.languages&&n.languages.join(", "))||n.language||"?",tz,os+", "+br,screen.width+" x "+screen.height+" px",new Date().toLocaleTimeString(),matchMedia("(prefers-color-scheme:dark)").matches?t("dark"):t("light")];
+ const dl=$("rows");dl.innerHTML="";
+ t("rows").forEach((r,i)=>{const d=document.createElement("div");d.className="row";d.innerHTML="<dt></dt><dd><span></span><small></small></dd>";
+  d.children[0].textContent=r[0];d.querySelector("span").textContent=vals[i];d.querySelector("small").textContent=r[1];dl.appendChild(d);
+  setTimeout(()=>d.classList.add("in"),sr||rowsShown?0:500+i*420)});
+ rowsShown=true;
+}
+let rowsShown=false;
+
+/* ===== Cycle diagram: constant motion, stops only where pressed ===== */
+const svg=$("cyc"),det=$("detail"),NS="http://www.w3.org/2000/svg";
+const el=(tag,a,p)=>{const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+el("circle",{class:"ring",cx:200,cy:200,r:140});
+const nodes=[],labels=[];
+for(let i=0;i<5;i++){const a=(-90+i*72)*Math.PI/180,x=200+140*Math.cos(a),y=200+140*Math.sin(a);
+ const g=el("g",{class:"n",tabindex:0,role:"button"});el("rect",{x:x-42,y:y-22,width:84,height:44},g);
+ labels.push(el("text",{x:x,y:y+5},g));nodes.push(g);
+ g.onclick=()=>press(i);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();press(i)}}}
+const pk=el("rect",{class:"pk",width:12,height:12});
+let ang=0,stopAt=null,sel=null;
+function place(){const a=(ang-90)*Math.PI/180;pk.setAttribute("x",200+140*Math.cos(a)-6);pk.setAttribute("y",200+140*Math.sin(a)-6)}
+function press(i){
+ if(sel===i){sel=null;stopAt=null}else{sel=i;stopAt=i*72;if(sr){ang=stopAt}}
+ showDetail();place();
+}
+function showDetail(){
+ nodes.forEach((n,k)=>n.classList.toggle("on",k===sel));
+ det.innerHTML="<h3></h3><p></p>";
+ if(sel===null){det.firstChild.textContent="";det.lastChild.textContent=t("hint")}
+ else{const s=t("stages")[sel];det.firstChild.textContent=s[1];det.lastChild.textContent=s[2]}
+}
+function buildStages(){t("stages").forEach((s,i)=>{labels[i].textContent=s[0];nodes[i].setAttribute("aria-label",s[1])});svg.setAttribute("aria-label",t("cycLabel"));showDetail()}
+const SPD=.45;
+(function frame(){
+ if(!sr){
+  if(stopAt===null)ang=(ang+SPD)%360;
+  else{const diff=((stopAt-ang)%360+360)%360;ang=diff<=SPD?stopAt:(ang+SPD)%360}
+ }
+ place();requestAnimationFrame(frame)})();
+
+/* ===== Survey ===== */
+function buildSurvey(){const b=$("bars");b.innerHTML="";
+ if(!SURVEY.length)return;$("resStatus").hidden=true;
+ SURVEY.forEach(r=>{const d=document.createElement("div");d.className="bar";d.innerHTML="<b></b><i><span></span></i><span></span>";
+  d.children[0].textContent=r[lang]||r.en;d.children[1].firstChild.style.width=r.pct+"%";d.children[2].textContent=r.pct+"%";b.appendChild(d)})}
+
+/* ===== Encyclopedia ===== */
+let topic="all";
+function buildChips(){const c=$("chips");c.innerHTML="";
+ ["all",...new Set(WIKI.map(w=>w.c))].forEach(k=>{const b=document.createElement("button");b.textContent=k==="all"?t("all"):t("cat")[k];b.setAttribute("aria-pressed",k===topic);
+  b.onclick=()=>{topic=k;buildChips();render()};c.appendChild(b)})}
+function render(){const k=$("q").value.trim().toLowerCase(),list=$("entries");list.innerHTML="";
+ const r=WIKI.filter(w=>(topic==="all"||w.c===topic)&&(w[lang].t+w[lang].d).toLowerCase().includes(k));
+ r.forEach(w=>{const x=w[lang],d=document.createElement("details");
+  d.innerHTML="<summary></summary><p></p><h4></h4><ul></ul><div class='help'></div>";
+  d.children[0].textContent=x.t;d.children[1].textContent=x.d;d.children[2].textContent=t("prev");
+  x.p.forEach(s=>{const li=document.createElement("li");li.textContent=s;d.querySelector("ul").appendChild(li)});
+  d.querySelector(".help").textContent=t("ifh")+x.h;list.appendChild(d)});
+ $("none").hidden=r.length>0}
+$("q").oninput=render;
+
+/* ===== Help ===== */
+function buildHelp(){
+ const st=$("steps");st.innerHTML="";
+ t("steps").forEach(s=>{const li=document.createElement("li");li.innerHTML="<b></b><span></span>";li.children[0].textContent=s[0];li.children[1].textContent=s[1];st.appendChild(li)});
+ const c=$("contacts");c.innerHTML="";
+ t("contacts").forEach(x=>{const d=document.createElement("div");d.className="contact"+(x.u?" urgent":"");
+  const n=document.createElement(x.tel?"a":"div");n.className="num";n.textContent=x.n;if(x.tel)n.href="tel:"+x.tel;
+  const b=document.createElement("div");b.innerHTML="<h3></h3><p></p>";b.children[0].textContent=x.t;b.children[1].textContent=x.p;
+  (x.l||[]).forEach(l=>{const a=document.createElement("a");a.className="l";a.textContent=l[0];a.href=l[1];if(l[1].startsWith("http")){a.target="_blank";a.rel="noopener noreferrer"}b.appendChild(a)});
+  d.append(n,b);c.appendChild(d)})}
+
+/* ===== Campaign ===== */
+function buildPosters(){const p=$("posters");p.innerHTML="";
+ if(POSTERS.length)POSTERS.forEach(x=>{const f=document.createElement("figure");f.className="poster";const im=new Image();im.src=x.src;im.alt=x[lang]||x.en||"";f.appendChild(im);
+  const c=document.createElement("figcaption");c.textContent=x[lang]||x.en||"";f.appendChild(c);p.appendChild(f)});
+ else for(let i=0;i<3;i++){const f=document.createElement("div");f.className="poster ph";f.textContent=t("soon");p.appendChild(f)}}
+
+applyLang();route(true);
+</script>
+</body>
+</html>
